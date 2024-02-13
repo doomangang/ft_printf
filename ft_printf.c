@@ -6,24 +6,54 @@
 /*   By: jihyjeon < jihyjeon@student.42seoul.kr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:11:44 by jihyjeon          #+#    #+#             */
-/*   Updated: 2024/02/07 23:12:38 by jihyjeon         ###   ########.fr       */
+/*   Updated: 2024/02/13 19:19:37 by jihyjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *str, ...)
+int ft_putchar(int c)
 {
-	va_list	arg_ptr;
-	va_list	args_copy;
-	int		args;
+	if (write(1, &c, 1) == -1)
+		return (-1);
+	return (1);
+}
 
-	va_start(arg_ptr, str);
-	va_copy(args_copy, arg_ptr);
-	args = 0;
-	while (args < max)
+int format_printer(const char *s, va_list p)
+{
+	char	c;
+
+	c = *(s + 1);
+	if (c == 'c')
+		return(ft_putchar(va_arg(p, int)));
+	return (-1);
+}
+
+int	ft_printf(const char *fmt, ...)
+{
+	va_list		ptr;
+	const char	*str;
+	int			len;
+	int			cnt;
+
+	cnt = 0;
+	len = 0;
+	va_start(ptr, fmt);
+	str = fmt - 1;
+	while (*(str++))
 	{
-		va_arg();
+		if (len < 0)
+			break ;
+		if (*str != '%')
+		{
+			len = ft_putchar(*str);
+			cnt++;
+			continue ;
+		}
+		len = format_printer(str, ptr);
+		cnt += len;
+		str++;
 	}
-	va_end(arg_ptr);
+	va_end(ptr);
+	return (cnt);
 }
