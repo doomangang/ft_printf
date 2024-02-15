@@ -6,28 +6,11 @@
 /*   By: jihyjeon < jihyjeon@student.42seoul.kr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:11:44 by jihyjeon          #+#    #+#             */
-/*   Updated: 2024/02/13 19:19:37 by jihyjeon         ###   ########.fr       */
+/*   Updated: 2024/02/15 20:46:05 by jihyjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-int ft_putchar(int c)
-{
-	if (write(1, &c, 1) == -1)
-		return (-1);
-	return (1);
-}
-
-int format_printer(const char *s, va_list p)
-{
-	char	c;
-
-	c = *(s + 1);
-	if (c == 'c')
-		return(ft_putchar(va_arg(p, int)));
-	return (-1);
-}
 
 int	ft_printf(const char *fmt, ...)
 {
@@ -40,7 +23,7 @@ int	ft_printf(const char *fmt, ...)
 	len = 0;
 	va_start(ptr, fmt);
 	str = fmt - 1;
-	while (*(str++))
+	while (*(++str))
 	{
 		if (len < 0)
 			break ;
@@ -56,4 +39,33 @@ int	ft_printf(const char *fmt, ...)
 	}
 	va_end(ptr);
 	return (cnt);
+}
+
+int	format_printer(const char *s, va_list p)
+{
+	char	c;
+	int		plen;
+
+	c = *(s + 1);
+	if (c == 'c')
+		plen = ft_putchar(va_arg(p, int));
+	if (c == 's')
+		plen = ft_putstr(va_arg(p, char *));
+	if (c == 'p')
+	{
+		ft_putstr("0x10");
+		plen = ft_putnbr_base((int)(va_arg(p, void *)), "0123456789abcdef") + 4;
+	}
+	if (c == 'd' || c == 'i')
+		plen = ft_putnbr_base(va_arg(p, long long), "0123456789");
+	if (c == 'u')
+		plen = ft_putunsigned(va_arg(p, unsigned long long));
+	if (c == 'x')
+		plen = ft_putnbr_base((va_arg(p, long long)), "0123456789abcdef");
+	if (c == 'X')
+		plen = ft_putnbr_base((va_arg(p, long long)), "0123456789ABCDEF");
+	if (c == '%')
+		plen = ft_putchar('%');
+	p++;
+	return (plen);
 }
