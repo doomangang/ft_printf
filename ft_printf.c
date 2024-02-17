@@ -6,7 +6,7 @@
 /*   By: jihyjeon < jihyjeon@student.42seoul.kr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:11:44 by jihyjeon          #+#    #+#             */
-/*   Updated: 2024/02/16 15:01:39 by jihyjeon         ###   ########.fr       */
+/*   Updated: 2024/02/17 19:27:56 by jihyjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_printf(const char *fmt, ...)
 	while (*(++str))
 	{
 		if (*str != '%')
-			len = ft_putchar(*str);
+			len = char_printer(*str);
 		else
 		{
 			len = format_printer(str, ptr);
@@ -47,34 +47,28 @@ int	format_printer(const char *s, va_list p)
 
 	c = *(s + 1);
 	if (c == 'c')
-		len = ft_putchar(va_arg(p, int));
+		len = char_printer(va_arg(p, int));
 	if (c == 's')
-		len = ft_putstr(va_arg(p, char *));
+		len = str_printer(va_arg(p, char *));
 	if (c == 'p')
-	{
-		len = ft_putstr("0x");
-		len += ft_put_unbr(va_arg(p, unsigned long long), "0123456789abcdef");
-	}
+		len = pointer_printer(va_arg(p, unsigned long long), "0123456789abcdef");
 	if (c == 'd' || c == 'i')
-		len = ft_put_nbr((long long)va_arg(p, int), "0123456789");
+		len = num_printer((long long)va_arg(p, int), "0123456789");
 	if (c == 'u')
-		len = ft_put_uint(va_arg(p, unsigned int), "0123456789");
+		len = unsigned_printer(va_arg(p, unsigned int), "0123456789");
 	if (c == 'x')
-		len = ft_put_uint(va_arg(p, unsigned int), "0123456789abcdef");
+		len = unsigned_printer(va_arg(p, unsigned int), "0123456789abcdef");
 	if (c == 'X')
-		len = ft_put_uint(va_arg(p, unsigned int), "0123456789ABCDEF");
+		len = unsigned_printer(va_arg(p, unsigned int), "0123456789ABCDEF");
 	if (c == '%')
-		len = ft_putchar('%');
+		len = char_printer('%');
 	p++;
 	return (len);
 }
 
-int	ft_put_uint(unsigned int n, char *base)
+int	char_printer(int c)
 {
-	int					len;
-	unsigned long long	nbr;
-
-	nbr = (unsigned long long)n;
-	len = ft_put_unbr(nbr, base);
-	return (len);
+	if (write(1, &c, 1) != 1)
+		return (-1);
+	return (1);
 }
