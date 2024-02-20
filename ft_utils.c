@@ -6,7 +6,7 @@
 /*   By: jihyjeon < jihyjeon@student.42seoul.kr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 20:15:30 by jihyjeon          #+#    #+#             */
-/*   Updated: 2024/02/20 15:43:22 by jihyjeon         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:46:19 by jihyjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,19 @@ int	str_printer(char *s)
 		return (str_printer("(null)"));
 	while (*(s + len))
 		len++;
-	if (write(1, s, len) != len)
-		len = -1;
-	return (len);
+	return (write(1, s, len));
 }
 
 int	pointer_printer(unsigned long long n)
 {
 	int	len;
-	int	cnt;
 
-	cnt = str_printer("0x");
-	if (cnt == -1)
+	if (str_printer("0x") == -1)
 		return (-1);
-	len = cnt;
-	len += display(n, "0123456789abcdef", 16);
+	len = display(n, "0123456789abcdef", 16);
 	if (len == -1)
 		return (-1);
-	return (len);
+	return (len + 2);
 }
 
 int	num_printer(long long n)
@@ -65,17 +60,12 @@ int	unsigned_printer(unsigned int n, char *base)
 {
 	unsigned long long	num;
 	int					base_len;
-	int					len;
 
 	num = (unsigned long long)n;
 	base_len = 0;
-	len = 0;
 	while (*(base + base_len))
 		base_len++;
-	len = display(num, base, base_len);
-	if (len == -1)
-		return (-1);
-	return (len);
+	return (display(num, base, base_len));
 }
 
 int	display(unsigned long long n, char *base, int base_len)

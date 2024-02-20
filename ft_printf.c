@@ -6,7 +6,7 @@
 /*   By: jihyjeon < jihyjeon@student.42seoul.kr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:11:44 by jihyjeon          #+#    #+#             */
-/*   Updated: 2024/02/20 16:23:01 by jihyjeon         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:47:54 by jihyjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,5 @@ int	format_printer(const char *s, va_list p)
 
 int	char_printer(int c)
 {
-	if (write(1, &c, 1) != 1)
-		return (-1);
-	return (1);
+	return (write(1, &c, 1));
 }
