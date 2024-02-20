@@ -6,7 +6,7 @@
 /*   By: jihyjeon < jihyjeon@student.42seoul.kr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 20:15:30 by jihyjeon          #+#    #+#             */
-/*   Updated: 2024/02/17 19:30:45 by jihyjeon         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:43:22 by jihyjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ int	str_printer(char *s)
 	return (len);
 }
 
-int	pointer_printer(unsigned long long n, char *base)
+int	pointer_printer(unsigned long long n)
 {
-	int base_len;
 	int	len;
 	int	cnt;
 
@@ -38,24 +37,17 @@ int	pointer_printer(unsigned long long n, char *base)
 	if (cnt == -1)
 		return (-1);
 	len = cnt;
-	base_len = 0;
-	while (*(base + base_len))
-		base_len++;
-	len += display(n, base, base_len);
+	len += display(n, "0123456789abcdef", 16);
 	if (len == -1)
 		return (-1);
 	return (len);
 }
 
-int	num_printer(long long n, char *base)
+int	num_printer(long long n)
 {
-	int	base_len;
 	int	len;
 
-	base_len = 0;
 	len = 0;
-	while (*(base + base_len))
-		base_len++;
 	if (n < 0)
 	{
 		if (char_printer('-') == -1)
@@ -63,7 +55,7 @@ int	num_printer(long long n, char *base)
 		n *= -1;
 		len++;
 	}
-	len += display(n, base, base_len);
+	len += display(n, "0123456789", 10);
 	if (len <= 0)
 		return (-1);
 	return (len);

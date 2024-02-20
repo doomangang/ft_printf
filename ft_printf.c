@@ -6,7 +6,7 @@
 /*   By: jihyjeon < jihyjeon@student.42seoul.kr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:11:44 by jihyjeon          #+#    #+#             */
-/*   Updated: 2024/02/17 19:27:56 by jihyjeon         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:23:01 by jihyjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	ft_printf(const char *fmt, ...)
 		else
 		{
 			len = format_printer(str, ptr);
-			str++;
+			if (*(str + 1))
+				str++;
 		}
 		if (len == -1)
 			return (-1);
@@ -51,9 +52,9 @@ int	format_printer(const char *s, va_list p)
 	if (c == 's')
 		len = str_printer(va_arg(p, char *));
 	if (c == 'p')
-		len = pointer_printer(va_arg(p, unsigned long long), "0123456789abcdef");
+		len = pointer_printer(va_arg(p, unsigned long long));
 	if (c == 'd' || c == 'i')
-		len = num_printer((long long)va_arg(p, int), "0123456789");
+		len = num_printer((long long)va_arg(p, int));
 	if (c == 'u')
 		len = unsigned_printer(va_arg(p, unsigned int), "0123456789");
 	if (c == 'x')
